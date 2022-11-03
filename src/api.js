@@ -18,6 +18,7 @@ export const createComment = async (text, replyingTo = null) => {
       },
       username: 'juliusomo',
     },
+    replies: [],
   };
 };
 
