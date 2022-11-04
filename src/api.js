@@ -1,22 +1,27 @@
 import data from './data.json';
+import * as dayjs from 'dayjs';
+const relativeTime = require('dayjs/plugin/relativeTime');
+dayjs.extend(relativeTime);
 
 export const getComments = async () => {
   return data.comments;
 };
 
 export const createComment = async (text, replyingTo = null) => {
+  const dateFromNow = dayjs(new Date().toISOString()).fromNow();
+
   return {
     id: Math.random().toString(36).substr(2, 9),
     content: text,
-    createdAt: new Date().toISOString(),
+    createdAt: dateFromNow,
     score: 0,
     replyingTo,
     user: {
       image: { 
-        png: './images/avatars/image-juliusomo.png',
-        webp: './images/avatars/image-juliusomo.webp',
+        png: data.currentUser.image.png,
+        webp: data.currentUser.image.webp,
       },
-      username: 'juliusomo',
+      username: data.currentUser.username,
     },
     replies: [],
   };

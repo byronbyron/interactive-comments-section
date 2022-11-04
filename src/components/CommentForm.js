@@ -4,6 +4,7 @@ import { useState } from 'react';
 function CommentForm({ handleSubmit, submitLabel }) {
   const [text, setText] = useState('');
   const isTextareaDisabled = text.length === 0;
+
   const onSubmit = (event) => {
     event.preventDefault();
     handleSubmit(text);
@@ -27,7 +28,7 @@ function CommentForm({ handleSubmit, submitLabel }) {
             <img src={data.currentUser.image.png} alt={data.currentUser.username} />
           </div>
 
-          <button className="btn-primary" disabled={isTextareaDisabled} >{submitLabel}</button>
+          <button className="btn-primary" disabled={isTextareaDisabled}>{submitLabel}</button>
         </div>
       </form>
     </div>

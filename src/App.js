@@ -1,10 +1,11 @@
 import Comments from './components/Comments.js';
 import Score from './Score.js';
+import data from './data.json';
 
 function App() {
   return (
     <div className="container">
-      <Comments currentUserId="1" />
+      <Comments currentUsername={data.currentUser.username} />
     </div>
   );
 }
