@@ -115,6 +115,7 @@ textarea {
   padding: 0.5rem;
   cursor: pointer;
   color: var(--light-grayish-blue);
+  transition: color 0.15s;
 }
 
 .score-plus:hover,
@@ -177,6 +178,13 @@ textarea.form-control {
   border-radius: 0.5rem;
   min-width: 104px;
   margin-left: auto;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--light-grayish-blue);
 }
 
 .comment-actions {
@@ -197,10 +205,24 @@ textarea.form-control {
   color: var(--moderate-blue);
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.reply:hover,
+.reply:focus,
+.edit:hover,
+.edit:focus {
+  color: var(--light-grayish-blue);
 }
 
 .delete {
   color: var(--soft-red);
+}
+
+.delete:hover,
+.delete:focus {
+  color: var(--pale-red);
 }
 
 .comment-actions span {
