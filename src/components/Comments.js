@@ -9,6 +9,7 @@ import CommentForm from './CommentForm.js';
 
 function Comments({ currentUsername }) {
   const [comments, setComments] = useState([]);
+  const [activeComment, setActiveComment] = useState(null);
 
   const getReplies = comment => {
     if (comment.replies.length > 0) return comment.replies;
@@ -25,7 +26,7 @@ function Comments({ currentUsername }) {
   const deleteComment = (id) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       deleteCommentApi(id).then(() => {
-        const updatedComments = comments.filter(comment => comment.id !== id);
+        const updatedComments = comments.filter(comment => comment.id !== id );
         setComments(updatedComments);
       })
     }
@@ -47,6 +48,9 @@ function Comments({ currentUsername }) {
             replies={getReplies(comment)}
             currentUsername={currentUsername}
             deleteComment={deleteComment}
+            activeComment={activeComment}
+            setActiveComment={setActiveComment}
+            addComment={addComment}
           />
         ))}
       </ul>

@@ -134,12 +134,9 @@ textarea {
   color: var(--moderate-blue);
 }
 
-.score-minus {
-
-}
-
 .form {
   padding: 1rem;
+  margin-bottom: 1rem;
   background-color: var(--white);
   border-radius: 0.5rem;
 }
