@@ -26,7 +26,18 @@ function Comments({ currentUsername }) {
   const deleteComment = (id) => {
     if (window.confirm('Are you sure you want to delete this comment?')) {
       deleteCommentApi(id).then(() => {
-        const updatedComments = comments.filter(comment => comment.id !== id );
+        const updatedComments = comments.filter(comment => {
+          if (comment.id !== id) {
+            const updatedReplies = comment.replies.filter(reply => {
+              return reply.id !== id;
+            });
+
+            comment.replies = updatedReplies;
+          }
+
+          return comment.id !== id;
+        });
+        
         setComments(updatedComments);
       })
     }

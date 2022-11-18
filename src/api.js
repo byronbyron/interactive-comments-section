@@ -15,7 +15,7 @@ export const createComment = async (text, replyingTo = null) => {
     content: text,
     createdAt: dateFromNow,
     score: 0,
-    replyingTo,
+    replyingTo: replyingTo,
     user: {
       image: { 
         png: data.currentUser.image.png,
