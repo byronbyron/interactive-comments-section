@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import {
     getComments as getCommentsApi,
     createComment as createCommentApi,
-    deleteComment as deleteCommentApi
+    deleteComment as deleteCommentApi,
+    updateComment as updateCommentApi,
 } from '../api.js';
 import Comment from './Comment.js';
 import CommentForm from './CommentForm.js';
@@ -17,9 +18,11 @@ function Comments({ currentUsername }) {
     return comment;
   }
 
-  const addComment = (text, replyingTo) => {
-    createCommentApi(text, replyingTo).then(comment => {
+  const addComment = (text, parentId) => {
+    console.log('addComment', text, parentId);
+    createCommentApi(text, parentId).then(comment => {
       setComments([...comments, comment]);
+      setActiveComment(null);
     })
   }
 
@@ -43,6 +46,21 @@ function Comments({ currentUsername }) {
     }
   }
 
+  const updateComment = (text, commentId) => {
+    updateCommentApi(text, commentId).then(() => {
+      const updatedComments = comments.map(comment => {
+        if (comment.id === commentId) {
+          return { ...comment, content: text };
+        }
+
+        return comment;
+      });
+
+      setComments(updatedComments);
+      setActiveComment(null);
+    })
+  }
+
   useEffect(() => {
     getCommentsApi().then(data => {
       setComments(data);
@@ -59,6 +77,7 @@ function Comments({ currentUsername }) {
             replies={getReplies(comment)}
             currentUsername={currentUsername}
             deleteComment={deleteComment}
+            updateComment={updateComment}
             activeComment={activeComment}
             setActiveComment={setActiveComment}
             addComment={addComment}

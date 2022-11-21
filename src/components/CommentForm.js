@@ -1,13 +1,20 @@
 import data from '../data.json';
 import { useState } from 'react';
 
-function CommentForm({ handleSubmit, submitLabel }) {
-  const [text, setText] = useState('');
+function CommentForm({
+  handleSubmit,
+  submitLabel,
+  replyId,
+  hasCancelButton = false,
+  initialText = '',
+  handleCancel
+}) {
+  const [text, setText] = useState(initialText);
   const isTextareaDisabled = text.length === 0;
 
   const onSubmit = (event) => {
     event.preventDefault();
-    handleSubmit(text);
+    handleSubmit(text, replyId);
     setText('');
   }
 
@@ -29,6 +36,8 @@ function CommentForm({ handleSubmit, submitLabel }) {
           </div>
 
           <button className="btn-primary" disabled={isTextareaDisabled}>{submitLabel}</button>
+
+          
         </div>
       </form>
     </div>

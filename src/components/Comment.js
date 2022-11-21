@@ -1,7 +1,17 @@
 import Score from '../Score.js';
 import CommentForm from './CommentForm.js';
 
-function Comment({ comment, replies, currentUsername, deleteComment, activeComment, setActiveComment, addComment }) {
+function Comment({
+  comment,
+  replies,
+  currentUsername,
+  deleteComment,
+  updateComment,
+  activeComment,
+  setActiveComment,
+  addComment,
+  parentId = null,
+}) {
   const fiveMinutes = 300000;
   const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
   const canReply = currentUsername !== comment.user.username;
@@ -15,7 +25,7 @@ function Comment({ comment, replies, currentUsername, deleteComment, activeComme
     activeComment &&
     activeComment.type === 'editing' &&
     activeComment.id === comment.id;
-  const replyingTo = null;
+  const replyId = parentId ? parentId : comment.id;
 
   return (
     <li>
@@ -30,7 +40,16 @@ function Comment({ comment, replies, currentUsername, deleteComment, activeComme
           </div>
 
           <div className="comment-content">
-            <p>{comment.content}</p>
+            {!isEditing && <p>{comment.content}</p>}
+            {isEditing && (
+              <CommentForm
+                submitLabel="Update"
+                hasCancelButton
+                initialText={comment.content}
+                handleSubmit={(text) => updateComment(text, comment.id)}
+                handleCancel={() => setActiveComment(null)}
+              />
+            )}
           </div>
         </div>
 
@@ -70,7 +89,8 @@ function Comment({ comment, replies, currentUsername, deleteComment, activeComme
       {isReplying && (
         <CommentForm
           submitLabel="Reply"
-          handleSubmit={(text) => addComment(text, replyingTo)}
+          replyId={replyId}
+          handleSubmit={(text, replyId) => addComment(text, replyId)}
         />
       )}
 
@@ -83,9 +103,11 @@ function Comment({ comment, replies, currentUsername, deleteComment, activeComme
               replies={[]}
               currentUsername={currentUsername}
               deleteComment={deleteComment}
+              updateComment={updateComment}
+              addComment={addComment}
               activeComment={activeComment}
               setActiveComment={setActiveComment}
-              addComment={addComment}
+              parentId={comment.id}
             />
           ))}
         </ul>
