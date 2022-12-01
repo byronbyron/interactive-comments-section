@@ -7,6 +7,8 @@ import {
 } from '../api.js';
 import Comment from './Comment.js';
 import CommentForm from './CommentForm.js';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function Comments({ currentUsername }) {
   const [comments, setComments] = useState([]);
@@ -19,7 +21,6 @@ function Comments({ currentUsername }) {
   }
 
   const addComment = (text, parentId) => {
-    console.log('addComment', text, parentId);
     createCommentApi(text, parentId).then(comment => {
       setComments([...comments, comment]);
       setActiveComment(null);
@@ -27,23 +28,37 @@ function Comments({ currentUsername }) {
   }
 
   const deleteComment = (id) => {
-    if (window.confirm('Are you sure you want to delete this comment?')) {
-      deleteCommentApi(id).then(() => {
-        const updatedComments = comments.filter(comment => {
-          if (comment.id !== id) {
-            const updatedReplies = comment.replies.filter(reply => {
-              return reply.id !== id;
-            });
+    confirmAlert({
+      title: "Delete comment",
+      message: "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
+      buttons: [
+        {
+          label: 'Yes, delete',
+          onClick: () => actionDelete(id),
+        },
+        {
+          label: 'No, cancel',
+        }
+      ]
+    });
+  }
 
-            comment.replies = updatedReplies;
-          }
+  const actionDelete = (id) => {
+    deleteCommentApi(id).then(() => {
+      const updatedComments = comments.filter(comment => {
+        if (comment.id !== id) {
+          const updatedReplies = comment.replies.filter(reply => {
+            return reply.id !== id;
+          });
 
-          return comment.id !== id;
-        });
-        
-        setComments(updatedComments);
-      })
-    }
+          comment.replies = updatedReplies;
+        }
+
+        return comment.id !== id;
+      });
+      
+      setComments(updatedComments);
+    })
   }
 
   const updateComment = (text, commentId) => {
